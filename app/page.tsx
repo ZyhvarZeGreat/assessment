@@ -1,103 +1,230 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Header from "@/components/Header";
+import Link from "next/link";
+import { connections, searchSuggestions } from "@/lib/data";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const isSearching = searchQuery.length > 0;
+
+  const filteredSuggestions = searchSuggestions.filter((sug) =>
+    sug.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredConnections = connections.filter((conn) =>
+    conn.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    conn.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    setShowDropdown(query.length > 0);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header onSearch={handleSearch} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Profile Section */}
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 bg-[#1a1f4d] rounded-full flex items-center justify-center">
+              <span className="text-white font-bold text-3xl">J</span>
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Joshua Heart</h1>
+              <p className="text-gray-500">@joshheart3495</p>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Connections List */}
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <h2 className="text-lg font-semibold text-gray-900">Connections List</h2>
+            </div>
+            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+              View all
+            </button>
+          </div>
+
+          {/* Search results for mobile */}
+          <div className="md:hidden px-4 py-3 border-b border-gray-200">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Search customer"
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full pl-10 pr-3 text-[#929292] py-2 border placeholder:text-[#929292] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Search suggestions (when typing) */}
+          {isSearching && filteredSuggestions.length > 0 && searchQuery.length > 0 && (
+            <div className="border-b border-gray-200">
+              {filteredSuggestions.map((sug, idx) => (
+                <div
+                  key={idx}
+                  className="px-6 py-3 hover:bg-gray-50 cursor-pointer"
+                >
+                  <p className="font-medium text-gray-900">{sug.name}</p>
+                  <p className="text-sm text-gray-500">{sug.username}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* No results state */}
+          {isSearching && filteredConnections.length === 0 && filteredSuggestions.length === 0 && (
+            <div className="py-16 text-center">
+              <div className="flex justify-center mb-4">
+                <svg className="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No results found</h3>
+              <p className="text-gray-500">Check spelling or try searching by connection name</p>
+            </div>
+          )}
+
+          {/* Table - Desktop */}
+          {!isSearching && filteredConnections.length > 0 && (
+            <>
+              <div className="hidden md:block overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Last login
+                      </th>
+                      <th className="px-6 py-3"></th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {filteredConnections.map((connection) => (
+                      <tr key={connection.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <Link href={`/profile/${connection.id}`} className="flex items-center gap-3 group">
+                            <div className="w-10 h-10 bg-[#1a1f4d] rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-white font-semibold">
+                                {connection.name.charAt(0)}
+                              </span>
+                            </div>
+                            <span className="font-medium text-gray-900 group-hover:text-blue-600">
+                              {connection.name}
+                            </span>
+                          </Link>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {connection.email}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {connection.location}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              connection.status === "active"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {connection.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {connection.lastLogin}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                          <button className="text-gray-400 hover:text-gray-600">
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* List - Mobile */}
+              <div className="md:hidden">
+                <div className="divide-y divide-gray-200">
+                  <div className="px-4 py-3 bg-gray-50 grid grid-cols-2 text-xs font-medium text-gray-500 uppercase">
+                    <div>Name</div>
+                    <div>Email</div>
+                  </div>
+                  {filteredConnections.map((connection) => (
+                    <Link
+                      key={connection.id}
+                      href={`/profile/${connection.id}`}
+                      className="px-4 py-3 hover:bg-gray-50 grid grid-cols-2 items-center"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 bg-[#1a1f4d] rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-white font-semibold text-sm">
+                            {connection.name.charAt(0)}
+                          </span>
+                        </div>
+                        <span className="font-medium text-gray-900 text-sm">
+                          {connection.name}
+                        </span>
+                      </div>
+                      <div className="text-sm text-gray-500 truncate">
+                        {connection.email}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Empty state (no connections) */}
+          {!isSearching && filteredConnections.length === 0 && (
+            <div className="py-16 text-center">
+              <div className="flex justify-center mb-4">
+                <svg className="w-20 h-20 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No connections yet</h3>
+              <p className="text-gray-500 mb-4">
+                Start building your network. Search for<br />connections on Aplite.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
