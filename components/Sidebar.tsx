@@ -41,9 +41,9 @@ export default function Sidebar() {
             <Image
               src="/home-logo.png"
               alt="Aplite Logo"
-              width={32}
-              height={32}
-              className="w-8 h-8"
+              width={65}
+              height={65}
+              className="w-auto h-auto"
             />
             
           </div>

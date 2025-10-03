@@ -43,26 +43,10 @@ export default function Header({ onSearch, searchPlaceholder = "Search customer"
   return (
     <header className="sticky top-0 z-40 w-full bg-white border-b border-gray-200">
       <div className="flex items-center justify-between h-16 px-4 md:px-6">
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-md"
-        >
-          {isMenuOpen ? (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          )}
-        </button>
-
         {/* Mobile logo */}
         <div className="md:hidden flex items-center gap-2">
           <Image
-            src="/home-logo.png"
+            src="/home-logo-mobile.png"
             alt="Aplite Logo"
             width={32}
             height={32}
@@ -84,7 +68,7 @@ export default function Header({ onSearch, searchPlaceholder = "Search customer"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
               onFocus={() => searchQuery.length > 0 && setShowDropdown(true)}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#929292]"
+              className="w-2/3 pl-10 pr-3 py-2 border text-sm text-[#929292] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder:text-[#929292]"
             />
 
             {/* Search Dropdown */}
@@ -137,11 +121,28 @@ export default function Header({ onSearch, searchPlaceholder = "Search customer"
           </div>
         </div>
 
-        {/* Search icon - Mobile */}
-        <MobileSearch />
+        {/* Right side - Mobile: Search icon and Menu */}
+        <div className="md:hidden flex items-center gap-3">
+          <MobileSearch />
+          
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-md"
+          >
+            {isMenuOpen ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            )}
+          </button>
+        </div>
 
-        {/* Right side - Notification & User */}
-        <div className="flex items-center gap-4 ml-auto md:ml-6">
+        {/* Right side - Desktop: Notification & User */}
+        <div className="hidden md:flex items-center gap-6 ml-auto">
           <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -152,16 +153,17 @@ export default function Header({ onSearch, searchPlaceholder = "Search customer"
             <div className="w-10 h-10 bg-[#1a1f4d] rounded-full flex items-center justify-center">
               <span className="text-white font-semibold">JH</span>
             </div>
-            <div className="hidden md:block">
-              <p className="text-sm font-medium text-gray-900">Josh Heart</p>
+            <div>
+              <p className="text-sm font-semibold text-gray-900">Josh Heart</p>
               <p className="text-xs text-gray-500">Accountant</p>
             </div>
           </div>
 
-          <button className="hidden md:block text-gray-600 hover:text-gray-900">
+          <button className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
+            Log out
           </button>
         </div>
       </div>
