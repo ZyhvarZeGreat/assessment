@@ -45,7 +45,7 @@ export default function Sidebar() {
               height={32}
               className="w-8 h-8"
             />
-            <span className="text-xl font-semibold">aplite</span>
+            
           </div>
         </div>
 
