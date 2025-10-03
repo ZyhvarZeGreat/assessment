@@ -41,7 +41,7 @@ export default function MobileSearch() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
-                  className="w-full pl-10 pr-3 py-2 border-none focus:outline-none text-lg"
+                  className="w-full pl-10 pr-3 py-2 border-none focus:outline-none text-lg placeholder:text-[#929292]"
                 />
               </div>
               <button
